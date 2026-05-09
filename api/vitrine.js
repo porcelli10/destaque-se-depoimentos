@@ -1,22 +1,21 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
 
   const apiKey = process.env.CLICKUP_API_KEY;
   const listId = process.env.CLICKUP_TESTIMONIALS_LIST_ID;
-  const debug = req.query.debug === '1';
 
   if (!apiKey || !listId) {
-    return res.status(200).json(debug ? { error: 'missing_env', apiKey: !!apiKey, listId: !!listId } : []);
+    return res.status(200).json([]);
   }
 
   try {
-    const url = `https://api.clickup.com/api/v2/list/${listId}/task`;
-    const r = await fetch(url, { headers: { Authorization: apiKey } });
+    const r = await fetch(
+      `https://api.clickup.com/api/v2/list/${listId}/task`,
+      { headers: { Authorization: apiKey } }
+    );
+
     const data = await r.json();
-
-    if (debug) return res.status(200).json({ url, status: r.status, rawTasks: (data.tasks || []).map(t => ({ id: t.id, name: t.name, status: t.status?.status })), err: data.err });
-
     const tasks = (data.tasks || []).filter(t => t.status?.status === 'aprovado');
 
     const depoimentos = tasks.map(task => {
