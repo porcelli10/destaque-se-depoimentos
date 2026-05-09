@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
+  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=30');
 
   const apiKey = process.env.CLICKUP_API_KEY;
   const listId = process.env.CLICKUP_TESTIMONIALS_LIST_ID;
