@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Depoimentos — Destaque-se</title>
+  <title>Deixe seu Depoimento — Destaque-se</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
       --danger:  #ff4060;
       --text:    #e8e0f5;
       --muted:   #7a6a9a;
-      --ig:      #E1306C;
     }
 
     html { scroll-behavior: smooth; }
@@ -34,7 +33,6 @@
       overflow-x: hidden;
     }
 
-    /* Grid texture */
     body::before {
       content: ''; position: fixed; inset: 0;
       background-image:
@@ -76,7 +74,6 @@
       max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7;
     }
 
-    /* CTA button */
     .btn-cta {
       display: inline-flex; align-items: center; gap: .6rem;
       background: var(--accent); color: #fff; border: none;
@@ -97,16 +94,14 @@
     .btn-cta:hover::before { transform: translateX(100%); }
     .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(123,53,232,.5); }
     .btn-cta:active { transform: translateY(0); }
-
     .btn-cta svg { flex-shrink: 0; }
 
-    /* Social proof mini */
     .social-proof {
       display: flex; align-items: center; justify-content: center;
       gap: .75rem; margin-top: 1.5rem; color: var(--muted); font-size: .85rem;
     }
 
-    .proof-dots { display: flex; gap: -4px; }
+    .proof-dots { display: flex; }
     .proof-dot {
       width: 30px; height: 30px; border-radius: 50%;
       border: 2px solid var(--bg);
@@ -115,10 +110,9 @@
       font-family: 'Space Grotesk', sans-serif; font-size: .65rem; font-weight: 700;
       margin-left: -8px;
     }
-
     .proof-dot:first-child { margin-left: 0; }
 
-    /* ── FORM SECTION (oculto por padrão) ─────────────────── */
+    /* ── FORM SECTION ──────────────────────────────────────── */
     .form-wrap {
       max-height: 0; overflow: hidden;
       transition: max-height .65s cubic-bezier(.4,0,.2,1);
@@ -132,7 +126,6 @@
       padding: 0 1rem 3rem;
     }
 
-    /* Divider */
     .form-divider {
       display: flex; align-items: center; gap: 1rem;
       margin-bottom: 2rem; opacity: 0;
@@ -140,40 +133,30 @@
     }
 
     .form-wrap.open .form-divider { opacity: 1; }
-
     .form-divider-line { flex: 1; height: 1px; background: var(--dim); }
-
     .form-divider-label {
       font-family: 'Space Mono', monospace; font-size: .65rem;
       letter-spacing: .15em; color: var(--accent2); white-space: nowrap;
     }
 
-    /* Close button */
     .btn-close-form {
       display: flex; align-items: center; gap: .4rem;
       background: none; border: 1px solid var(--dim); color: var(--muted);
       padding: .45rem 1rem; border-radius: 50px; font-size: .8rem;
       cursor: pointer; margin: 0 auto 1.5rem; transition: border-color .2s, color .2s;
     }
-
     .btn-close-form:hover { border-color: var(--accent2); color: var(--accent2); }
 
-    /* Card */
     .card {
       background: var(--surface); border: 1px solid var(--dim);
       border-radius: 18px; padding: 1.75rem 2rem; margin-bottom: 1.25rem;
       position: relative; overflow: hidden;
     }
-
     .card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent2), transparent);
       opacity: .4;
     }
-
-    .card.invalid { border-color: rgba(255,64,96,.4); }
-    .card.invalid .card-label { color: var(--danger) !important; }
-
     @media (max-width: 520px) { .card { padding: 1.3rem 1.1rem; } }
 
     .card-label {
@@ -183,10 +166,8 @@
     }
 
     .card h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.45; }
-
     .optional { font-weight: 400; font-size: .85em; color: var(--muted); }
 
-    /* Mode tabs */
     .tabs {
       display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
       background: var(--surface); border: 1px solid var(--dim);
@@ -199,10 +180,8 @@
       cursor: pointer; transition: all .2s; color: var(--muted); background: transparent;
       display: flex; align-items: center; justify-content: center; gap: .5rem;
     }
-
     .tab.active { background: var(--accent); color: #fff; box-shadow: 0 4px 20px rgba(123,53,232,.4); }
 
-    /* Video */
     .camera-wrap {
       background: #000; border-radius: 12px; overflow: hidden;
       position: relative; margin-bottom: 1rem;
@@ -222,7 +201,6 @@
       flex-direction: column; align-items: center; justify-content: center;
       gap: 1rem; background: rgba(8,6,15,.7);
     }
-
     .camera-overlay.hidden { display: none; }
     .camera-msg { font-size: .92rem; color: var(--muted); text-align: center; padding: 0 1rem; }
 
@@ -232,17 +210,12 @@
       cursor: pointer; display: flex; align-items: center; gap: .5rem;
       transition: transform .15s, box-shadow .15s;
     }
-
     .btn-start-cam:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(123,53,232,.4); }
 
     .rec-controls { display: none; flex-direction: column; align-items: center; gap: .75rem; }
     .rec-controls.show { display: flex; }
 
-    .rec-timer {
-      font-family: 'Space Mono', monospace; font-size: 1.6rem;
-      color: var(--text); letter-spacing: .05em;
-    }
-
+    .rec-timer { font-family: 'Space Mono', monospace; font-size: 1.6rem; color: var(--text); letter-spacing: .05em; }
     .rec-dot { display: inline-block; width: 10px; height: 10px; background: var(--danger); border-radius: 50%; margin-right: .4rem; animation: blink 1s ease infinite; }
     .rec-max { font-size: .78rem; color: var(--muted); }
     .rec-progress-bar { width: 100%; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
@@ -253,7 +226,6 @@
       background: var(--danger); cursor: pointer; transition: all .2s;
       display: flex; align-items: center; justify-content: center;
     }
-
     .btn-record.recording { background: var(--surf2); border-color: var(--danger); animation: pulse-ring 1.5s ease infinite; }
 
     .playback-controls { display: none; gap: .75rem; justify-content: center; }
@@ -264,7 +236,6 @@
       cursor: pointer; border: none; transition: all .15s;
       display: flex; align-items: center; gap: .4rem;
     }
-
     .btn-redo { background: var(--surf2); color: var(--muted); border: 1px solid var(--dim); }
     .btn-redo:hover { border-color: var(--accent); color: var(--accent2); }
     .btn-use { background: var(--accent); color: #fff; box-shadow: 0 4px 16px rgba(123,53,232,.35); }
@@ -276,7 +247,19 @@
     }
     .video-ok-msg.show { display: flex; }
 
-    /* Image attachment */
+    .gallery-row {
+      display: flex; align-items: center; gap: .75rem;
+      margin-top: .75rem; justify-content: center;
+    }
+    .gallery-or { font-size: .78rem; color: var(--muted); }
+    .btn-gallery {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: none; border: 1px solid var(--dim); color: var(--muted);
+      padding: .45rem 1rem; border-radius: 50px; font-size: .8rem;
+      cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .btn-gallery:hover { border-color: var(--accent2); color: var(--accent2); }
+
     .img-upload-area {
       display: flex; align-items: center; gap: .6rem;
       border: 1px dashed var(--dim); border-radius: 10px;
@@ -284,45 +267,18 @@
       color: var(--muted); font-size: .85rem;
       transition: border-color .2s, color .2s;
     }
-
     .img-upload-area:hover { border-color: var(--accent2); color: var(--accent2); }
 
-    .img-preview-wrap {
-      margin-top: .75rem; position: relative; display: inline-block;
-    }
-
-    .img-preview-wrap img {
-      max-width: 100%; max-height: 220px; border-radius: 10px;
-      border: 1px solid var(--dim); display: block;
-    }
-
+    .img-preview-wrap { margin-top: .75rem; position: relative; display: inline-block; }
+    .img-preview-wrap img { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1px solid var(--dim); display: block; }
     .img-remove {
       display: inline-flex; align-items: center; gap: .35rem;
       margin-top: .5rem; background: none; border: 1px solid var(--dim);
       color: var(--muted); padding: .3rem .7rem; border-radius: 50px;
       font-size: .75rem; cursor: pointer; transition: border-color .2s, color .2s;
     }
-
     .img-remove:hover { border-color: var(--danger); color: var(--danger); }
 
-    /* Gallery upload */
-    .gallery-row {
-      display: flex; align-items: center; gap: .75rem;
-      margin-top: .75rem; justify-content: center;
-    }
-
-    .gallery-or { font-size: .78rem; color: var(--muted); }
-
-    .btn-gallery {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: none; border: 1px solid var(--dim); color: var(--muted);
-      padding: .45rem 1rem; border-radius: 50px; font-size: .8rem;
-      cursor: pointer; transition: border-color .2s, color .2s;
-    }
-
-    .btn-gallery:hover { border-color: var(--accent2); color: var(--accent2); }
-
-    /* Fields */
     .field { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem; }
     .field:last-child { margin-bottom: 0; }
     .field label { font-size: .82rem; color: var(--muted); }
@@ -333,45 +289,35 @@
       padding: .7rem 1rem; outline: none; width: 100%;
       transition: border-color .2s, box-shadow .2s;
     }
-
     .field input::placeholder, .field textarea::placeholder { color: rgba(122,106,154,.4); }
     .field input:focus, .field textarea:focus { border-color: rgba(123,53,232,.4); box-shadow: 0 0 0 3px rgba(123,53,232,.08); }
     .field textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
 
-    .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 460px) { .fields-row { grid-template-columns: 1fr; } }
-
     .char-count { text-align: right; font-size: .72rem; color: var(--muted); margin-top: .25rem; }
 
-    /* Error */
     .err { display: none; color: var(--danger); font-size: .8rem; margin-top: .75rem; align-items: center; gap: .4rem; }
     .err.show { display: flex; }
 
-    /* iOS warn */
     .ios-warn { display: none; padding: .9rem 1.1rem; background: rgba(255,200,0,.08); border: 1px solid rgba(255,200,0,.25); border-radius: 10px; margin-bottom: 1rem; font-size: .85rem; color: #f0c800; line-height: 1.5; }
     .ios-warn.show { display: block; }
 
-    /* Upload progress */
     .upload-progress { display: none; flex-direction: column; gap: .5rem; margin-bottom: .75rem; }
     .upload-progress.show { display: flex; }
     .progress-bar { height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; width: 0; }
     .progress-label { font-size: .78rem; color: var(--muted); text-align: center; }
 
-    /* Submit */
     .submit-btn {
       width: 100%; padding: 1rem 2rem; background: var(--accent); color: #fff;
       border: none; border-radius: 13px; font-family: 'Space Grotesk', sans-serif;
       font-size: .9rem; font-weight: 700; cursor: pointer;
       transition: transform .2s, box-shadow .2s, opacity .2s; position: relative; overflow: hidden;
     }
-
     .submit-btn::before {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
       transform: translateX(-100%); transition: transform .5s;
     }
-
     .submit-btn:hover:not(:disabled)::before { transform: translateX(100%); }
     .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(123,53,232,.45); }
     .submit-btn:disabled { opacity: .5; cursor: not-allowed; }
@@ -385,7 +331,6 @@
       text-align: center; padding: 3rem 1.5rem; max-width: 640px; margin: 0 auto;
       animation: fadeIn .6s ease;
     }
-
     .success-msg.show { display: flex; }
 
     .success-ring {
@@ -394,9 +339,7 @@
       background: rgba(123,53,232,.1); box-shadow: 0 0 50px rgba(123,53,232,.25);
       margin-bottom: 1.5rem; animation: popIn .55s cubic-bezier(.34,1.56,.64,1) both;
     }
-
     .success-ring svg { color: var(--accent); }
-
     .success-msg h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: .75rem; }
     .success-msg p { color: var(--muted); max-width: 380px; line-height: 1.65; margin-bottom: 2rem; }
 
@@ -408,152 +351,14 @@
       transition: transform .2s, box-shadow .2s;
       box-shadow: 0 6px 24px rgba(220,39,67,.35);
     }
-
     .btn-instagram:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(220,39,67,.45); }
 
-    /* ── TESTIMONIALS SECTION ───────────────────────────────── */
-    .testimonials-section {
-      position: relative; z-index: 1;
-      max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 5rem;
-    }
-
-    .section-header {
-      text-align: center; margin-bottom: 2.5rem;
-    }
-
-    .section-tag {
-      font-family: 'Space Mono', monospace; font-size: .65rem;
-      letter-spacing: .2em; color: var(--accent2); text-transform: uppercase;
-      display: block; margin-bottom: .5rem; opacity: .8;
-    }
-
-    .section-header h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 700;
-    }
-
-    .section-header h2 span { color: var(--accent2); }
-
-    /* Stats */
-    .stats {
-      display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
-      margin-bottom: 2.5rem;
-    }
-
-    .stat { text-align: center; }
-    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent2); line-height: 1; }
-    .stat-label { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
-
-    /* Grid */
-    .dep-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
-
-    /* Dep card */
-    .dep-card {
-      background: var(--surface); border: 1px solid var(--dim);
-      border-radius: 18px; overflow: hidden;
-      transition: transform .2s, border-color .2s, box-shadow .2s;
-      animation: fadeUp .45s ease both;
-      position: relative;
-    }
-
-    .dep-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
-      opacity: .3;
-    }
-
-    .dep-card:hover { transform: translateY(-4px); border-color: rgba(123,53,232,.4); box-shadow: 0 12px 40px rgba(123,53,232,.15); }
-
-    .video-thumb { position: relative; aspect-ratio: 16/9; background: #000; cursor: pointer; overflow: hidden; }
-    .video-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .play-btn {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: rgba(8,6,15,.45); transition: background .2s;
-    }
-
-    .play-btn:hover { background: rgba(8,6,15,.25); }
-
-    .play-circle {
-      width: 56px; height: 56px; background: var(--accent); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 30px rgba(123,53,232,.5); transition: transform .2s;
-    }
-
-    .video-thumb:hover .play-circle { transform: scale(1.1); }
-
-    .card-body { padding: 1.4rem; }
-
-    .quote-mark {
-      font-family: 'Space Grotesk', sans-serif; font-size: 3rem; line-height: 1;
-      color: var(--accent); opacity: .2; margin-bottom: -.4rem;
-    }
-
-    .card-text {
-      font-size: .9rem; line-height: 1.65; color: var(--text); margin-bottom: 1.2rem;
-    }
-
-    .card-author { display: flex; align-items: center; gap: .75rem; padding-top: 1rem; border-top: 1px solid var(--dim); }
-
-    .avatar {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Space Grotesk', sans-serif; font-size: .72rem; font-weight: 700; color: #fff;
-    }
-
-    .author-info { min-width: 0; flex: 1; }
-    .author-name { font-weight: 600; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .author-biz  { font-size: .76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    .tipo-badge {
-      flex-shrink: 0; font-size: .62rem; padding: .2rem .5rem; border-radius: 50px;
-      font-family: 'Space Mono', monospace;
-    }
-
-    .tipo-badge.video { background: rgba(123,53,232,.2); color: var(--accent2); border: 1px solid rgba(123,53,232,.3); }
-    .tipo-badge.texto { background: rgba(255,200,0,.1); color: var(--gold); border: 1px solid rgba(255,200,0,.25); }
-
-    /* Empty / loading */
-    .dep-empty { text-align: center; padding: 4rem 1rem; color: var(--muted); grid-column: 1/-1; }
-    .dep-empty svg { margin-bottom: 1rem; opacity: .25; }
-
-    .spinner { width: 36px; height: 36px; border: 3px solid var(--dim); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; margin: 3rem auto; }
-
-    /* ── VIDEO MODAL ─────────────────────────────────────────── */
-    .modal-bg {
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(8,6,15,.92); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 1.5rem;
-    }
-
-    .modal-bg.open { display: flex; animation: fadeIn .25s ease; }
-
-    .modal { width: 100%; max-width: 800px; background: var(--surface); border: 1px solid var(--dim); border-radius: 18px; overflow: hidden; }
-
-    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid var(--dim); }
-    .modal-title { font-family: 'Space Grotesk', sans-serif; font-size: .95rem; font-weight: 600; }
-
-    .modal-close {
-      width: 32px; height: 32px; background: var(--surf2); border: 1px solid var(--dim);
-      border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: border-color .2s; color: var(--muted);
-    }
-
-    .modal-close:hover { border-color: var(--accent); color: var(--accent2); }
-    .modal video { width: 100%; max-height: 70vh; background: #000; display: block; }
-
-    /* ── INSTAGRAM FOOTER ───────────────────────────────────── */
+    /* ── FOOTER ─────────────────────────────────────────────── */
     .ig-footer {
       text-align: center; padding: 3rem 1.5rem;
       border-top: 1px solid var(--dim);
       position: relative; z-index: 1;
     }
-
     .ig-footer p { color: var(--muted); font-size: .95rem; margin-bottom: 1.25rem; line-height: 1.6; }
 
     .btn-ig-footer {
@@ -564,15 +369,11 @@
       transition: transform .2s, box-shadow .2s;
       box-shadow: 0 6px 24px rgba(220,39,67,.3);
     }
-
     .btn-ig-footer:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(220,39,67,.4); }
 
-    /* ── ANIMATIONS ─────────────────────────────────────────── */
     @keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
-    @keyframes fadeUp  { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
     @keyframes popIn   { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:scale(1); } }
     @keyframes blink   { 0%,100% { opacity:1; } 50% { opacity:0; } }
-    @keyframes spin    { to { transform:rotate(360deg); } }
     @keyframes pulse-ring {
       0%  { box-shadow: 0 0 0 0 rgba(255,64,96,.4); }
       70% { box-shadow: 0 0 0 14px rgba(255,64,96,0); }
@@ -582,7 +383,6 @@
 </head>
 <body>
 
-<!-- ── HERO ─────────────────────────────────────────────────── -->
 <section class="hero">
   <img src="/logo.png" alt="Destaque-se">
   <h1>Dê seu feedback pra gente continuar<br><span>melhorando</span> o nosso trabalho</h1>
@@ -601,7 +401,6 @@
   </div>
 </section>
 
-<!-- ── FORM (oculto, revela ao clicar) ──────────────────────── -->
 <div class="form-wrap" id="form-wrap">
   <div class="form-inner">
 
@@ -618,7 +417,6 @@
 
     <form id="form" novalidate>
 
-      <!-- Tabs -->
       <div class="tabs">
         <button type="button" class="tab active" id="tab-video" onclick="setMode('video')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
@@ -736,7 +534,6 @@
         </div>
       </div>
 
-      <!-- Erros e progresso -->
       <div class="err" id="err-video" style="margin-bottom:.75rem;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Grave ou selecione um vídeo antes de enviar.
@@ -744,7 +541,7 @@
 
       <div class="upload-progress" id="upload-progress">
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-        <div class="progress-label" id="progress-label">Enviando vídeo...</div>
+        <div class="progress-label" id="progress-label">Enviando...</div>
       </div>
 
       <button type="submit" class="submit-btn" id="submit-btn">
@@ -754,7 +551,6 @@
 
     </form>
 
-    <!-- Success -->
     <div class="success-msg" id="success-msg">
       <div class="success-ring">
         <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -770,24 +566,6 @@
   </div>
 </div>
 
-<!-- ── DEPOIMENTOS APROVADOS ─────────────────────────────────── -->
-<section class="testimonials-section">
-  <div class="section-header">
-    <span class="section-tag">// depoimentos</span>
-    <h2>O que nossos clientes <span>dizem</span></h2>
-  </div>
-
-  <div class="stats" id="stats" style="display:none">
-    <div class="stat"><div class="stat-num" id="total-count">0</div><div class="stat-label">Depoimentos</div></div>
-    <div class="stat"><div class="stat-num" id="video-count">0</div><div class="stat-label">Em vídeo</div></div>
-    <div class="stat"><div class="stat-num" id="texto-count">0</div><div class="stat-label">Escritos</div></div>
-  </div>
-
-  <div id="dep-loading"><div class="spinner"></div></div>
-  <div class="dep-grid" id="dep-grid"></div>
-</section>
-
-<!-- ── INSTAGRAM FOOTER ──────────────────────────────────────── -->
 <div class="ig-footer">
   <p>Acompanhe nosso conteúdo e as novidades em automação com IA para assistências técnicas.</p>
   <a href="https://www.instagram.com/fabioporcelli/" target="_blank" rel="noopener" class="btn-ig-footer">
@@ -796,21 +574,7 @@
   </a>
 </div>
 
-<!-- ── VIDEO MODAL ───────────────────────────────────────────── -->
-<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title">Depoimento em Vídeo</span>
-      <button class="modal-close" onclick="closeModal()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <video id="modal-video" controls playsinline></video>
-  </div>
-</div>
-
 <script>
-  // ── Form reveal ──────────────────────────────────────────
   function openForm() {
     const wrap = document.getElementById('form-wrap');
     wrap.classList.add('open');
@@ -822,7 +586,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ── Mode switch ──────────────────────────────────────────
   let currentMode = 'video';
 
   window.setMode = (mode) => {
@@ -833,12 +596,10 @@
     document.getElementById('panel-texto').style.display = mode === 'texto' ? 'block' : 'none';
   };
 
-  // ── iOS detection ────────────────────────────────────────
   if (/iPad|iPhone|iPod/.test(navigator.userAgent) || typeof MediaRecorder === 'undefined') {
     document.getElementById('ios-warn').classList.add('show');
   }
 
-  // ── Camera & Recording ───────────────────────────────────
   let stream, mediaRecorder, chunks = [], recordedBlob = null, videoReady = false;
   let timerInterval, seconds = 0;
   const MAX_SECONDS = 90;
@@ -934,24 +695,22 @@
     document.getElementById('timer-display').textContent = `${m}:${sec}`;
   }
 
-  // ── Char count ───────────────────────────────────────────
   document.getElementById('texto').addEventListener('input', function() {
     document.getElementById('char-n').textContent = this.value.length;
   });
 
-  // ── Upload via XHR ───────────────────────────────────────
-  function uploadVideo(blob) {
+  function uploadFile(blob) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('POST', '/api/upload');
       xhr.setRequestHeader('content-type', blob.type || 'video/webm');
-      xhr.setRequestHeader('x-vercel-filename', `depoimento-${Date.now()}.webm`);
+      xhr.setRequestHeader('x-vercel-filename', `depoimento-${Date.now()}`);
 
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
           const pct = Math.round((e.loaded / e.total) * 100);
           document.getElementById('progress-fill').style.width = `${pct}%`;
-          document.getElementById('progress-label').textContent = `Enviando vídeo... ${pct}%`;
+          document.getElementById('progress-label').textContent = `Enviando... ${pct}%`;
         }
       };
 
@@ -965,7 +724,6 @@
     });
   }
 
-  // ── Submit ───────────────────────────────────────────────
   document.getElementById('form').addEventListener('submit', async (e) => {
     e.preventDefault();
     let ok = true;
@@ -997,10 +755,10 @@
     if (currentMode === 'video' && recordedBlob) {
       document.getElementById('upload-progress').classList.add('show');
       try {
-        videoUrl = await uploadVideo(recordedBlob);
+        videoUrl = await uploadFile(recordedBlob);
         document.getElementById('progress-fill').style.width = '100%';
         document.getElementById('progress-label').textContent = 'Vídeo enviado!';
-      } catch (err) {
+      } catch {
         document.getElementById('progress-label').textContent = 'Erro no upload. Tente novamente.';
         btn.classList.remove('busy'); btn.disabled = false;
         return;
@@ -1011,10 +769,10 @@
       document.getElementById('upload-progress').classList.add('show');
       document.getElementById('progress-label').textContent = 'Enviando imagem...';
       try {
-        imageUrl = await uploadVideo(imageFile);
+        imageUrl = await uploadFile(imageFile);
         document.getElementById('progress-fill').style.width = '100%';
         document.getElementById('progress-label').textContent = 'Imagem enviada!';
-      } catch (err) {
+      } catch {
         document.getElementById('progress-label').textContent = 'Erro no upload da imagem. Tente novamente.';
         btn.classList.remove('busy'); btn.disabled = false;
         return;
@@ -1026,10 +784,10 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nome:     document.getElementById('nome').value.trim(),
-          empresa:  '',
-          tipo:     currentMode,
-          texto:    currentMode === 'texto' ? document.getElementById('texto').value.trim() : '',
+          nome:    document.getElementById('nome').value.trim(),
+          empresa: '',
+          tipo:    currentMode,
+          texto:   currentMode === 'texto' ? document.getElementById('texto').value.trim() : '',
           videoUrl,
           imageUrl,
         }),
@@ -1042,124 +800,13 @@
     document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  // ── Load testimonials ────────────────────────────────────
-  async function loadTestimonials() {
-    try {
-      const resp = await fetch('/api/vitrine');
-      const items = await resp.json();
-
-      document.getElementById('dep-loading').style.display = 'none';
-
-      if (items.length > 0) {
-        document.getElementById('stats').style.display = 'flex';
-        document.getElementById('total-count').textContent = items.length;
-        document.getElementById('video-count').textContent = items.filter(i => i.tipo === 'video').length;
-        document.getElementById('texto-count').textContent = items.filter(i => i.tipo === 'texto').length;
-      }
-
-      const grid = document.getElementById('dep-grid');
-
-      if (items.length === 0) {
-        grid.innerHTML = `<div class="dep-empty"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><p>Seja o primeiro a deixar seu depoimento!</p></div>`;
-        return;
-      }
-
-      items.forEach((dep, idx) => {
-        const card = dep.tipo === 'video' ? buildVideoCard(dep, idx) : buildTextCard(dep, idx);
-        grid.appendChild(card);
-      });
-
-    } catch {
-      document.getElementById('dep-loading').style.display = 'none';
-      document.getElementById('dep-grid').innerHTML = `<div class="dep-empty"><p>Não foi possível carregar os depoimentos.</p></div>`;
-    }
-  }
-
-  function buildVideoCard(dep, idx) {
-    const el = document.createElement('div');
-    el.className = 'dep-card';
-    el.style.animationDelay = `${idx * 0.07}s`;
-    el.innerHTML = `
-      <div class="video-thumb" onclick="openModal('${esc(dep.videoUrl)}','${esc(dep.nome)}')">
-        <video src="${esc(dep.videoUrl)}#t=0.5" preload="metadata" muted playsinline></video>
-        <div class="play-btn">
-          <div class="play-circle">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="card-author">
-          <div class="avatar">${getInitials(dep.nome)}</div>
-          <div class="author-info">
-            <div class="author-name">${esc(dep.nome)}</div>
-            <div class="author-biz">${esc(dep.empresa) || 'Assistência Técnica'}</div>
-          </div>
-          <span class="tipo-badge video">🎥 vídeo</span>
-        </div>
-      </div>`;
-    return el;
-  }
-
-  function buildTextCard(dep, idx) {
-    const el = document.createElement('div');
-    el.className = 'dep-card';
-    el.style.animationDelay = `${idx * 0.07}s`;
-    const imgHtml = dep.imageUrl
-      ? `<img src="${esc(dep.imageUrl)}" alt="foto do depoimento" style="width:100%;border-radius:10px 10px 0 0;object-fit:cover;max-height:200px;display:block;">`
-      : '';
-    el.innerHTML = `
-      ${imgHtml}
-      <div class="card-body">
-        <div class="quote-mark">"</div>
-        <p class="card-text">${esc(dep.texto)}</p>
-        <div class="card-author">
-          <div class="avatar">${getInitials(dep.nome)}</div>
-          <div class="author-info">
-            <div class="author-name">${esc(dep.nome)}</div>
-            <div class="author-biz">${esc(dep.empresa) || 'Assistência Técnica'}</div>
-          </div>
-          <span class="tipo-badge texto">✍️ texto</span>
-        </div>
-      </div>`;
-    return el;
-  }
-
-  function openModal(url, nome) {
-    document.getElementById('modal-video').src = url;
-    document.getElementById('modal-title').textContent = `Depoimento — ${nome}`;
-    document.getElementById('modal-bg').classList.add('open');
-    document.getElementById('modal-video').play();
-  }
-
-  window.closeModal = (e) => {
-    if (e && e.target !== document.getElementById('modal-bg')) return;
-    document.getElementById('modal-video').pause();
-    document.getElementById('modal-video').src = '';
-    document.getElementById('modal-bg').classList.remove('open');
-  };
-
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeModal(); });
-
-  function getInitials(nome) {
-    if (!nome || nome === 'Anônimo') return '?';
-    return nome.split(' ').slice(0,2).map(w => w[0].toUpperCase()).join('');
-  }
-
-  function esc(str) {
-    if (!str) return '';
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-  }
-
-  // ── Image attachment ─────────────────────────────────────
   let imageFile = null;
 
   document.getElementById('img-input').addEventListener('change', function() {
     const file = this.files[0];
     if (!file) return;
     imageFile = file;
-    const url = URL.createObjectURL(file);
-    document.getElementById('img-preview').src = url;
+    document.getElementById('img-preview').src = URL.createObjectURL(file);
     document.getElementById('img-upload-area').style.display = 'none';
     document.getElementById('img-preview-wrap').style.display = 'block';
     this.value = '';
@@ -1172,15 +819,13 @@
     document.getElementById('img-upload-area').style.display = 'flex';
   };
 
-  // ── Gallery upload ───────────────────────────────────────
   document.getElementById('gallery-input').addEventListener('change', function() {
     const file = this.files[0];
     if (!file) return;
     recordedBlob = file;
     videoReady = true;
-    const url = URL.createObjectURL(file);
     const pb = document.getElementById('playback');
-    pb.src = url; pb.style.display = 'block';
+    pb.src = URL.createObjectURL(file); pb.style.display = 'block';
     document.getElementById('preview').style.display = 'none';
     document.getElementById('cam-overlay').classList.add('hidden');
     document.getElementById('rec-controls').classList.remove('show');
@@ -1189,8 +834,6 @@
     document.getElementById('err-video').classList.remove('show');
     this.value = '';
   });
-
-  loadTestimonials();
 </script>
 </body>
 </html>
