@@ -1028,7 +1028,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nome:     document.getElementById('nome').value.trim(),
-          empresa:  document.getElementById('empresa').value.trim(),
+          empresa:  '',
           tipo:     currentMode,
           texto:    currentMode === 'texto' ? document.getElementById('texto').value.trim() : '',
           videoUrl,
