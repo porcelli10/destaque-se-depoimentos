@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url = `https://api.clickup.com/api/v2/list/${listId}/task?include_closed=true&order_by=date_created&reverse=true&page=0`;
+    const url = `https://api.clickup.com/api/v2/list/${listId}/task?order_by=date_created&reverse=true&page=0`;
     const r = await fetch(url, { headers: { Authorization: apiKey } });
     const data = await r.json();
 
