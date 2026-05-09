@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         empresa:   meta.empresa || '',
         tipo:      meta.tipo   || 'texto',
         videoUrl:  meta.videoUrl || '',
-        texto:     tipo === 'video' && !texto ? '' : texto,
+        texto:     meta.tipo === 'video' && !texto ? '' : texto,
         criadoEm: task.date_created,
       };
     });
