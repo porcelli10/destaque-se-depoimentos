@@ -653,7 +653,7 @@
 
       <!-- Identificação -->
       <div class="card">
-        <div class="card-label">// sobre você <span class="optional">(opcional)</span></div>
+        <div class="card-label">// sobre você</div>
         <h2>Como você quer aparecer na vitrine?</h2>
         <div class="fields-row">
           <div class="field">
@@ -664,6 +664,10 @@
             <label>Empresa / Negócio</label>
             <input type="text" id="empresa" placeholder="Ex: TechFix Assistência">
           </div>
+        </div>
+        <div class="err" id="err-identificacao" style="margin-top:.75rem;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Preencha seu nome e o nome da sua assistência antes de enviar.
         </div>
       </div>
 
@@ -909,6 +913,12 @@
       if (!videoReady || !recordedBlob) {
         document.getElementById('err-video').classList.add('show'); ok = false;
       }
+    }
+
+    if (!document.getElementById('nome').value.trim() || !document.getElementById('empresa').value.trim()) {
+      document.getElementById('err-identificacao').classList.add('show'); ok = false;
+    } else {
+      document.getElementById('err-identificacao').classList.remove('show');
     }
 
     if (!ok) return;
