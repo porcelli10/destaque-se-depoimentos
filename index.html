@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deixe seu Depoimento — Destaque-se</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #08060f;
+      --surface: #100c1e;
+      --surf2:   #160f28;
+      --dim:     #2a1f45;
+      --accent:  #7B35E8;
+      --accent2: #9D5FFF;
+      --gold:    #ffc800;
+      --danger:  #ff4060;
+      --text:    #e8e0f5;
+      --muted:   #7a6a9a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem 5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(123,53,232,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(123,53,232,.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none; z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 500px;
+      background: radial-gradient(ellipse, rgba(123,53,232,.12) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .container { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 2.5rem; animation: fadeDown .6s ease both; }
+    .header img { height: 60px; width: auto; margin-bottom: 1.5rem; }
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.3rem, 4vw, 1.9rem);
+      font-weight: 700; line-height: 1.25; margin-bottom: .75rem;
+    }
+    .header h1 span { color: var(--accent2); }
+    .header p { color: var(--muted); font-size: .97rem; font-weight: 300; line-height: 1.65; max-width: 480px; margin: 0 auto; }
+
+    /* Mode tabs */
+    .tabs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: .5rem; margin-bottom: 1.5rem;
+      background: var(--surface); border: 1px solid var(--dim);
+      border-radius: 14px; padding: .4rem;
+    }
+
+    .tab {
+      padding: .75rem 1rem; border-radius: 10px; border: none;
+      font-family: 'Outfit', sans-serif; font-size: .92rem; font-weight: 500;
+      cursor: pointer; transition: all .2s; color: var(--muted); background: transparent;
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+
+    .tab.active {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 20px rgba(123,53,232,.4);
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface); border: 1px solid var(--dim);
+      border-radius: 18px; padding: 1.75rem 2rem; margin-bottom: 1.25rem;
+      position: relative; overflow: hidden;
+      opacity: 0; animation: fadeUp .45s ease forwards;
+    }
+
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+      opacity: .4;
+    }
+
+    .card:nth-child(1) { animation-delay: .05s; }
+    .card:nth-child(2) { animation-delay: .15s; }
+    .card:nth-child(3) { animation-delay: .25s; }
+
+    @media (max-width: 520px) { .card { padding: 1.3rem 1.1rem; } }
+
+    .card-label {
+      font-family: 'Space Mono', monospace; font-size: .6rem;
+      letter-spacing: .18em; color: var(--accent2); text-transform: uppercase;
+      margin-bottom: .5rem; opacity: .8;
+    }
+
+    .card h2 { font-size: 1rem; font-weight: 500; margin-bottom: 1.25rem; line-height: 1.45; }
+
+    /* Video panel */
+    #panel-video { display: block; }
+    #panel-texto { display: none; }
+
+    .camera-wrap {
+      background: #000; border-radius: 12px; overflow: hidden;
+      aspect-ratio: 4/3; position: relative; margin-bottom: 1rem;
+      border: 2px solid var(--dim);
+    }
+
+    #preview, #playback {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    #playback { display: none; }
+
+    .camera-overlay {
+      position: absolute; inset: 0; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem; background: rgba(8,6,15,.7); backdrop-filter: blur(2px);
+    }
+
+    .camera-overlay.hidden { display: none; }
+
+    .camera-msg { font-size: .95rem; color: var(--muted); text-align: center; padding: 0 1rem; }
+
+    .btn-start-cam {
+      background: var(--accent); color: #fff; border: none;
+      padding: .8rem 1.8rem; border-radius: 50px; font-size: .92rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: .5rem;
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn-start-cam:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(123,53,232,.4); }
+
+    /* Recording controls */
+    .rec-controls {
+      display: none; flex-direction: column; align-items: center; gap: .75rem;
+    }
+
+    .rec-controls.show { display: flex; }
+
+    .rec-timer {
+      font-family: 'Space Mono', monospace; font-size: 1.6rem;
+      color: var(--text); letter-spacing: .05em;
+    }
+
+    .rec-timer .rec-dot {
+      display: inline-block; width: 10px; height: 10px;
+      background: var(--danger); border-radius: 50%; margin-right: .4rem;
+      animation: blink 1s ease infinite;
+    }
+
+    .rec-max { font-size: .78rem; color: var(--muted); }
+
+    .rec-progress-bar {
+      width: 100%; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden;
+    }
+
+    .rec-progress-fill {
+      height: 100%; background: var(--danger); border-radius: 2px;
+      transition: width .5s linear; width: 0%;
+    }
+
+    .btn-record {
+      width: 68px; height: 68px; border-radius: 50%; border: 3px solid #fff;
+      background: var(--danger); cursor: pointer; transition: all .2s;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 0 rgba(255,64,96,.5);
+      animation: none;
+    }
+
+    .btn-record.recording {
+      background: var(--surf2); border-color: var(--danger);
+      box-shadow: 0 0 0 8px rgba(255,64,96,.2);
+      animation: pulse-ring 1.5s ease infinite;
+    }
+
+    .btn-record svg { pointer-events: none; }
+
+    /* Playback controls */
+    .playback-controls {
+      display: none; gap: .75rem; justify-content: center;
+    }
+
+    .playback-controls.show { display: flex; }
+
+    .btn-redo, .btn-use {
+      padding: .7rem 1.4rem; border-radius: 50px; font-size: .88rem; font-weight: 600;
+      cursor: pointer; border: none; transition: all .15s;
+      display: flex; align-items: center; gap: .4rem;
+    }
+
+    .btn-redo { background: var(--surf2); color: var(--muted); border: 1px solid var(--dim); }
+    .btn-redo:hover { border-color: var(--accent); color: var(--accent2); }
+    .btn-use { background: var(--accent); color: #fff; box-shadow: 0 4px 16px rgba(123,53,232,.35); }
+    .btn-use:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(123,53,232,.45); }
+
+    .video-ok-msg {
+      display: none; align-items: center; gap: .5rem; padding: .55rem 1rem;
+      background: rgba(123,53,232,.12); border: 1px solid rgba(123,53,232,.3);
+      border-radius: 8px; font-size: .85rem; color: var(--accent2);
+    }
+
+    .video-ok-msg.show { display: flex; }
+
+    /* Text field */
+    .field { display: flex; flex-direction: column; gap: .35rem; }
+    .field label { font-size: .82rem; color: var(--muted); }
+
+    .field input, .field textarea {
+      background: var(--surf2); border: 1px solid var(--dim); border-radius: 10px;
+      color: var(--text); font-family: 'Outfit', sans-serif; font-size: .95rem;
+      padding: .7rem 1rem; outline: none; width: 100%;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .field input::placeholder, .field textarea::placeholder { color: rgba(122,106,154,.45); }
+    .field input:focus, .field textarea:focus {
+      border-color: rgba(123,53,232,.4); box-shadow: 0 0 0 3px rgba(123,53,232,.08);
+    }
+
+    .field textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+
+    .char-count { text-align: right; font-size: .72rem; color: var(--muted); margin-top: .25rem; }
+
+    .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 460px) { .fields-row { grid-template-columns: 1fr; } }
+
+    .optional { font-size: .82em; color: var(--muted); font-weight: 300; }
+
+    /* Error */
+    .err {
+      display: none; color: var(--danger); font-size: .8rem;
+      margin-top: .75rem; align-items: center; gap: .4rem;
+    }
+    .err.show { display: flex; }
+
+    /* Submit */
+    .submit-btn {
+      width: 100%; padding: 1.05rem 2rem; background: var(--accent); color: #fff;
+      border: none; border-radius: 13px; font-family: 'Orbitron', sans-serif;
+      font-size: .8rem; font-weight: 700; letter-spacing: .1em; cursor: pointer;
+      transition: transform .2s, box-shadow .2s, opacity .2s; position: relative; overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+      transform: translateX(-100%); transition: transform .5s;
+    }
+
+    .submit-btn:hover:not(:disabled)::before { transform: translateX(100%); }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(123,53,232,.45); }
+    .submit-btn:active:not(:disabled) { transform: translateY(0); }
+    .submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .submit-btn .loading { display: none; }
+    .submit-btn.busy .text { display: none; }
+    .submit-btn.busy .loading { display: inline; }
+
+    /* Progress */
+    .upload-progress {
+      display: none; flex-direction: column; gap: .5rem; margin-top: .75rem;
+    }
+    .upload-progress.show { display: flex; }
+    .progress-bar { height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; width: 0; }
+    .progress-label { font-size: .78rem; color: var(--muted); text-align: center; }
+
+    /* Success */
+    .success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 3.5rem 1rem; animation: fadeIn .6s ease; }
+    .success.show { display: flex; }
+    .success-ring {
+      width: 86px; height: 86px; border: 2px solid var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(123,53,232,.1); box-shadow: 0 0 50px rgba(123,53,232,.3);
+      margin-bottom: 1.5rem; animation: popIn .55s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .success-ring svg { color: var(--accent); }
+    .success h2 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; margin-bottom: .8rem; }
+    .success p { color: var(--muted); max-width: 380px; line-height: 1.65; }
+
+    /* Vitrine link */
+    .vitrine-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      margin-top: 1.5rem; color: var(--accent2); font-size: .88rem; text-decoration: none;
+      border: 1px solid rgba(123,53,232,.3); padding: .55rem 1.2rem; border-radius: 50px;
+      transition: background .2s, border-color .2s;
+    }
+    .vitrine-link:hover { background: rgba(123,53,232,.1); border-color: var(--accent); }
+
+    /* iOS warning */
+    .ios-warn {
+      display: none; padding: .9rem 1.1rem; background: rgba(255,200,0,.08);
+      border: 1px solid rgba(255,200,0,.25); border-radius: 10px; margin-bottom: 1rem;
+      font-size: .85rem; color: #f0c800; line-height: 1.5;
+    }
+    .ios-warn.show { display: block; }
+
+    /* Animations */
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+    @keyframes popIn    { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:scale(1); } }
+    @keyframes blink    { 0%,100% { opacity:1; } 50% { opacity:0; } }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(255,64,96,.4); }
+      70%  { box-shadow: 0 0 0 14px rgba(255,64,96,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,64,96,0); }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header class="header">
+    <img src="/logo.png" alt="Destaque-se">
+    <h1>Sua experiência <span>inspira</span><br>outros empreendedores</h1>
+    <p>Compartilhe como a Destaque-se transformou a sua assistência técnica. Seu depoimento ajuda outros donos de negócio a tomar a melhor decisão.</p>
+  </header>
+
+  <form id="form" novalidate>
+
+    <!-- Mode selector -->
+    <div class="tabs">
+      <button type="button" class="tab active" id="tab-video" onclick="setMode('video')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        Gravar Vídeo
+      </button>
+      <button type="button" class="tab" id="tab-texto" onclick="setMode('texto')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Escrever Depoimento
+      </button>
+    </div>
+
+    <!-- Video Panel -->
+    <div id="panel-video">
+      <div class="card">
+        <div class="card-label">// depoimento em vídeo</div>
+        <h2>Grave um vídeo curto contando sua experiência com a Destaque-se <span class="optional">(até 90 segundos)</span></h2>
+
+        <div class="ios-warn" id="ios-warn">
+          ⚠️ Seu navegador pode não suportar gravação de vídeo. Recomendamos usar o <strong>Google Chrome</strong> no Android ou computador. Ou escolha a opção <strong>"Escrever Depoimento"</strong> acima.
+        </div>
+
+        <div class="camera-wrap">
+          <video id="preview" autoplay muted playsinline></video>
+          <video id="playback" playsinline controls></video>
+          <div class="camera-overlay" id="cam-overlay">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7a6a9a" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <p class="camera-msg">Clique para ativar a câmera e gravar seu depoimento</p>
+            <button type="button" class="btn-start-cam" id="btn-start-cam" onclick="startCamera()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+              Ativar Câmera
+            </button>
+          </div>
+        </div>
+
+        <!-- Recording controls (shown after camera is on) -->
+        <div class="rec-controls" id="rec-controls">
+          <div class="rec-timer" id="rec-timer">
+            <span class="rec-dot" id="rec-dot" style="display:none"></span>
+            <span id="timer-display">00:00</span>
+          </div>
+          <div class="rec-max">Máximo 01:30</div>
+          <div class="rec-progress-bar">
+            <div class="rec-progress-fill" id="rec-progress"></div>
+          </div>
+          <button type="button" class="btn-record" id="btn-record" onclick="toggleRecord()">
+            <svg id="icon-record" width="24" height="24" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="8"/></svg>
+            <svg id="icon-stop" width="24" height="24" viewBox="0 0 24 24" fill="white" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          </button>
+        </div>
+
+        <!-- Playback controls (after recording) -->
+        <div class="playback-controls" id="playback-controls">
+          <button type="button" class="btn-redo" onclick="reRecord()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.93"/></svg>
+            Regravar
+          </button>
+          <button type="button" class="btn-use" id="btn-use-video" onclick="useVideo()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Usar este vídeo
+          </button>
+        </div>
+
+        <div class="video-ok-msg" id="video-ok">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Vídeo selecionado e pronto para enviar!
+        </div>
+      </div>
+    </div>
+
+    <!-- Text Panel -->
+    <div id="panel-texto">
+      <div class="card">
+        <div class="card-label">// depoimento escrito</div>
+        <h2>Conte sua experiência com a Destaque-se com suas palavras</h2>
+        <div class="field">
+          <label for="texto">Seu depoimento</label>
+          <textarea id="texto" placeholder="Ex: Antes de usar as automações da Destaque-se, eu perdia horas com tarefas manuais. Hoje minha assistência técnica atende muito mais clientes com o mesmo time..." maxlength="600"></textarea>
+          <div class="char-count"><span id="char-n">0</span>/600</div>
+        </div>
+        <div class="err" id="err-texto">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Por favor, escreva seu depoimento antes de enviar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Common fields -->
+    <div class="card">
+      <div class="card-label">// sobre você <span class="optional">(opcional)</span></div>
+      <h2>Como você quer aparecer na vitrine de depoimentos?</h2>
+      <div class="fields-row">
+        <div class="field">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" placeholder="Ex: João Silva" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="empresa">Empresa / Negócio</label>
+          <input type="text" id="empresa" placeholder="Ex: TechFix Assistência">
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload progress -->
+    <div class="upload-progress" id="upload-progress">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">Enviando vídeo...</div>
+    </div>
+
+    <div class="err" id="err-video" style="margin-bottom:.75rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Grave ou selecione um vídeo antes de enviar.
+    </div>
+
+    <button type="submit" class="submit-btn" id="submit-btn">
+      <span class="text">🚀 ENVIAR DEPOIMENTO</span>
+      <span class="loading">ENVIANDO...</span>
+    </button>
+
+  </form>
+
+  <!-- Success -->
+  <div class="success" id="success">
+    <div class="success-ring">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Obrigado pelo depoimento!</h2>
+    <p>Recebemos sua contribuição. Após revisão pela nossa equipe, ela aparecerá na vitrine pública da Destaque-se.</p>
+    <a href="/vitrine.html" class="vitrine-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Ver vitrine de depoimentos
+    </a>
+  </div>
+
+</div>
+
+<script type="module">
+  import { upload } from 'https://esm.sh/@vercel/blob/client';
+
+  // ── Mode switch ───────────────────────────────────────────
+  let currentMode = 'video';
+
+  window.setMode = (mode) => {
+    currentMode = mode;
+    document.getElementById('tab-video').classList.toggle('active', mode === 'video');
+    document.getElementById('tab-texto').classList.toggle('active', mode === 'texto');
+    document.getElementById('panel-video').style.display = mode === 'video' ? 'block' : 'none';
+    document.getElementById('panel-texto').style.display = mode === 'texto' ? 'block' : 'none';
+  };
+
+  // ── iOS/Safari detection ──────────────────────────────────
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const hasMediaRecorder = typeof MediaRecorder !== 'undefined';
+  if (isIOS || !hasMediaRecorder) {
+    document.getElementById('ios-warn').classList.add('show');
+  }
+
+  // ── Camera & Recording ────────────────────────────────────
+  let stream = null;
+  let mediaRecorder = null;
+  let chunks = [];
+  let recordedBlob = null;
+  let videoReady = false;
+  let timerInterval = null;
+  let seconds = 0;
+  const MAX_SECONDS = 90;
+
+  window.startCamera = async () => {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
+        audio: true,
+      });
+      const preview = document.getElementById('preview');
+      preview.srcObject = stream;
+      document.getElementById('cam-overlay').classList.add('hidden');
+      document.getElementById('rec-controls').classList.add('show');
+    } catch (err) {
+      alert('Não foi possível acessar a câmera. Verifique as permissões do navegador.');
+    }
+  };
+
+  window.toggleRecord = () => {
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  };
+
+  function startRecording() {
+    chunks = [];
+    recordedBlob = null;
+    videoReady = false;
+    document.getElementById('video-ok').classList.remove('show');
+
+    const mimeType = getSupportedMime();
+    const options = { videoBitsPerSecond: 600_000, audioBitsPerSecond: 64_000 };
+    if (mimeType) options.mimeType = mimeType;
+
+    mediaRecorder = new MediaRecorder(stream, options);
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    mediaRecorder.onstop = finalizeRecording;
+    mediaRecorder.start(500);
+
+    // UI
+    document.getElementById('btn-record').classList.add('recording');
+    document.getElementById('icon-record').style.display = 'none';
+    document.getElementById('icon-stop').style.display = 'block';
+    document.getElementById('rec-dot').style.display = 'inline-block';
+
+    seconds = 0;
+    updateTimer();
+    timerInterval = setInterval(() => {
+      seconds++;
+      updateTimer();
+      document.getElementById('rec-progress').style.width = `${(seconds / MAX_SECONDS) * 100}%`;
+      if (seconds >= MAX_SECONDS) stopRecording();
+    }, 1000);
+  }
+
+  function stopRecording() {
+    clearInterval(timerInterval);
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    document.getElementById('btn-record').classList.remove('recording');
+    document.getElementById('icon-record').style.display = 'block';
+    document.getElementById('icon-stop').style.display = 'none';
+    document.getElementById('rec-dot').style.display = 'none';
+  }
+
+  function finalizeRecording() {
+    const mime = getSupportedMime() || 'video/webm';
+    recordedBlob = new Blob(chunks, { type: mime });
+
+    const url = URL.createObjectURL(recordedBlob);
+    const playback = document.getElementById('playback');
+    playback.src = url;
+    document.getElementById('preview').style.display = 'none';
+    playback.style.display = 'block';
+
+    document.getElementById('rec-controls').classList.remove('show');
+    document.getElementById('playback-controls').classList.add('show');
+  }
+
+  window.reRecord = () => {
+    recordedBlob = null;
+    videoReady = false;
+    chunks = [];
+    document.getElementById('playback').style.display = 'none';
+    document.getElementById('preview').style.display = 'block';
+    document.getElementById('playback-controls').classList.remove('show');
+    document.getElementById('video-ok').classList.remove('show');
+    document.getElementById('rec-controls').classList.add('show');
+    document.getElementById('rec-progress').style.width = '0';
+    updateTimer(0);
+  };
+
+  window.useVideo = () => {
+    if (!recordedBlob) return;
+    videoReady = true;
+    document.getElementById('playback-controls').classList.remove('show');
+    document.getElementById('video-ok').classList.add('show');
+    document.getElementById('err-video').classList.remove('show');
+  };
+
+  function updateTimer(s = seconds) {
+    const m = String(Math.floor(s / 60)).padStart(2, '0');
+    const sec = String(s % 60).padStart(2, '0');
+    document.getElementById('timer-display').textContent = `${m}:${sec}`;
+  }
+
+  function getSupportedMime() {
+    const types = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm', 'video/mp4'];
+    return types.find(t => MediaRecorder.isTypeSupported(t)) || '';
+  }
+
+  // ── Char count ────────────────────────────────────────────
+  const textarea = document.getElementById('texto');
+  textarea.addEventListener('input', () => {
+    document.getElementById('char-n').textContent = textarea.value.length;
+  });
+
+  // ── Form submit ───────────────────────────────────────────
+  document.getElementById('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    let ok = true;
+
+    if (currentMode === 'texto') {
+      if (!textarea.value.trim()) {
+        document.getElementById('err-texto').classList.add('show');
+        ok = false;
+      }
+    } else {
+      if (!videoReady || !recordedBlob) {
+        document.getElementById('err-video').classList.add('show');
+        ok = false;
+      }
+    }
+
+    if (!ok) return;
+
+    const btn = document.getElementById('submit-btn');
+    btn.classList.add('busy');
+    btn.disabled = true;
+
+    let videoUrl = '';
+
+    if (currentMode === 'video' && recordedBlob) {
+      document.getElementById('upload-progress').classList.add('show');
+      document.getElementById('progress-label').textContent = 'Enviando vídeo...';
+
+      try {
+        const filename = `depoimento-${Date.now()}.webm`;
+        const blob = await upload(filename, recordedBlob, {
+          access: 'public',
+          handleUploadUrl: '/api/upload',
+          onUploadProgress: ({ percentage }) => {
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+            document.getElementById('progress-label').textContent = `Enviando vídeo... ${Math.round(percentage)}%`;
+          },
+        });
+        videoUrl = blob.url;
+        document.getElementById('progress-label').textContent = 'Vídeo enviado! Finalizando...';
+        document.getElementById('progress-fill').style.width = '100%';
+      } catch (err) {
+        console.error('Upload failed:', err);
+        document.getElementById('progress-label').textContent = 'Erro no upload. Tente novamente.';
+        btn.classList.remove('busy');
+        btn.disabled = false;
+        return;
+      }
+    }
+
+    const payload = {
+      nome:     document.getElementById('nome').value.trim(),
+      empresa:  document.getElementById('empresa').value.trim(),
+      tipo:     currentMode,
+      texto:    currentMode === 'texto' ? textarea.value.trim() : '',
+      videoUrl,
+    };
+
+    try {
+      await fetch('/api/depoimento', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (_) {}
+
+    document.getElementById('form').style.display = 'none';
+    document.getElementById('success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (stream) stream.getTracks().forEach(t => t.stop());
+  });
+</script>
+</body>
+</html>

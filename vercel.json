@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/upload.js":     { "maxDuration": 30 },
+    "api/depoimento.js": { "maxDuration": 15 },
+    "api/vitrine.js":    { "maxDuration": 10 }
+  }
+}
