@@ -272,6 +272,35 @@
     }
     .video-ok-msg.show { display: flex; }
 
+    /* Image attachment */
+    .img-upload-area {
+      display: flex; align-items: center; gap: .6rem;
+      border: 1px dashed var(--dim); border-radius: 10px;
+      padding: .7rem 1rem; margin-top: .75rem; cursor: pointer;
+      color: var(--muted); font-size: .85rem;
+      transition: border-color .2s, color .2s;
+    }
+
+    .img-upload-area:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .img-preview-wrap {
+      margin-top: .75rem; position: relative; display: inline-block;
+    }
+
+    .img-preview-wrap img {
+      max-width: 100%; max-height: 220px; border-radius: 10px;
+      border: 1px solid var(--dim); display: block;
+    }
+
+    .img-remove {
+      display: inline-flex; align-items: center; gap: .35rem;
+      margin-top: .5rem; background: none; border: 1px solid var(--dim);
+      color: var(--muted); padding: .3rem .7rem; border-radius: 50px;
+      font-size: .75rem; cursor: pointer; transition: border-color .2s, color .2s;
+    }
+
+    .img-remove:hover { border-color: var(--danger); color: var(--danger); }
+
     /* Gallery upload */
     .gallery-row {
       display: flex; align-items: center; gap: .75rem;
@@ -675,6 +704,19 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Escreva seu depoimento antes de enviar.
           </div>
+
+          <input type="file" id="img-input" accept="image/*" style="display:none">
+          <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('img-input').click()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Anexar uma foto <span class="optional">(opcional)</span></span>
+          </div>
+          <div class="img-preview-wrap" id="img-preview-wrap" style="display:none">
+            <img id="img-preview" src="" alt="preview">
+            <button type="button" class="img-remove" onclick="removeImage()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Remover
+            </button>
+          </div>
         </div>
       </div>
 
@@ -957,6 +999,7 @@
     btn.classList.add('busy'); btn.disabled = true;
 
     let videoUrl = '';
+    let imageUrl = '';
 
     if (currentMode === 'video' && recordedBlob) {
       document.getElementById('upload-progress').classList.add('show');
@@ -966,6 +1009,20 @@
         document.getElementById('progress-label').textContent = 'Vídeo enviado!';
       } catch (err) {
         document.getElementById('progress-label').textContent = 'Erro no upload. Tente novamente.';
+        btn.classList.remove('busy'); btn.disabled = false;
+        return;
+      }
+    }
+
+    if (currentMode === 'texto' && imageFile) {
+      document.getElementById('upload-progress').classList.add('show');
+      document.getElementById('progress-label').textContent = 'Enviando imagem...';
+      try {
+        imageUrl = await uploadVideo(imageFile);
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('progress-label').textContent = 'Imagem enviada!';
+      } catch (err) {
+        document.getElementById('progress-label').textContent = 'Erro no upload da imagem. Tente novamente.';
         btn.classList.remove('busy'); btn.disabled = false;
         return;
       }
@@ -981,6 +1038,7 @@
           tipo:     currentMode,
           texto:    currentMode === 'texto' ? document.getElementById('texto').value.trim() : '',
           videoUrl,
+          imageUrl,
         }),
       });
     } catch (_) {}
@@ -1054,7 +1112,11 @@
     const el = document.createElement('div');
     el.className = 'dep-card';
     el.style.animationDelay = `${idx * 0.07}s`;
+    const imgHtml = dep.imageUrl
+      ? `<img src="${esc(dep.imageUrl)}" alt="foto do depoimento" style="width:100%;border-radius:10px 10px 0 0;object-fit:cover;max-height:200px;display:block;">`
+      : '';
     el.innerHTML = `
+      ${imgHtml}
       <div class="card-body">
         <div class="quote-mark">"</div>
         <p class="card-text">${esc(dep.texto)}</p>
@@ -1095,6 +1157,27 @@
     if (!str) return '';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   }
+
+  // ── Image attachment ─────────────────────────────────────
+  let imageFile = null;
+
+  document.getElementById('img-input').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    imageFile = file;
+    const url = URL.createObjectURL(file);
+    document.getElementById('img-preview').src = url;
+    document.getElementById('img-upload-area').style.display = 'none';
+    document.getElementById('img-preview-wrap').style.display = 'block';
+    this.value = '';
+  });
+
+  window.removeImage = () => {
+    imageFile = null;
+    document.getElementById('img-preview').src = '';
+    document.getElementById('img-preview-wrap').style.display = 'none';
+    document.getElementById('img-upload-area').style.display = 'flex';
+  };
 
   // ── Gallery upload ───────────────────────────────────────
   document.getElementById('gallery-input').addEventListener('change', function() {
