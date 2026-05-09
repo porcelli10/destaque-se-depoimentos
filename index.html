@@ -471,9 +471,7 @@
 
 </div>
 
-<script type="module">
-  import { upload } from 'https://esm.sh/@vercel/blob/client';
-
+<script>
   // ── Mode switch ───────────────────────────────────────────
   let currentMode = 'video';
 
@@ -617,6 +615,36 @@
     document.getElementById('char-n').textContent = textarea.value.length;
   });
 
+  // ── Video upload via XHR (com progresso real) ────────────
+  function uploadVideo(blob) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload');
+      xhr.setRequestHeader('content-type', blob.type || 'video/webm');
+      xhr.setRequestHeader('x-vercel-filename', `depoimento-${Date.now()}.webm`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          document.getElementById('progress-fill').style.width = `${pct}%`;
+          document.getElementById('progress-label').textContent = `Enviando vídeo... ${pct}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          resolve(data.url);
+        } else {
+          reject(new Error(`Erro ${xhr.status}: ${xhr.responseText}`));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Falha na conexão durante o upload.'));
+      xhr.send(blob);
+    });
+  }
+
   // ── Form submit ───────────────────────────────────────────
   document.getElementById('form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -648,16 +676,7 @@
       document.getElementById('progress-label').textContent = 'Enviando vídeo...';
 
       try {
-        const filename = `depoimento-${Date.now()}.webm`;
-        const blob = await upload(filename, recordedBlob, {
-          access: 'public',
-          handleUploadUrl: '/api/upload',
-          onUploadProgress: ({ percentage }) => {
-            document.getElementById('progress-fill').style.width = `${percentage}%`;
-            document.getElementById('progress-label').textContent = `Enviando vídeo... ${Math.round(percentage)}%`;
-          },
-        });
-        videoUrl = blob.url;
+        videoUrl = await uploadVideo(recordedBlob);
         document.getElementById('progress-label').textContent = 'Vídeo enviado! Finalizando...';
         document.getElementById('progress-fill').style.width = '100%';
       } catch (err) {
