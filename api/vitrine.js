@@ -11,12 +11,12 @@ export default async function handler(req, res) {
 
   try {
     const r = await fetch(
-      `https://api.clickup.com/api/v2/list/${listId}/task?statuses[]=aprovado&order_by=date_created&reverse=true&page=0`,
+      `https://api.clickup.com/api/v2/list/${listId}/task?include_closed=true&order_by=date_created&reverse=true&page=0`,
       { headers: { Authorization: apiKey } }
     );
 
     const data = await r.json();
-    const tasks = data.tasks || [];
+    const tasks = (data.tasks || []).filter(t => t.status?.status === 'aprovado');
 
     const depoimentos = tasks.map(task => {
       const meta = {};
