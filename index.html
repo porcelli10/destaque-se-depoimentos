@@ -530,7 +530,7 @@
     document.getElementById('video-ok').classList.remove('show');
 
     const mimeType = getSupportedMime();
-    const options = { videoBitsPerSecond: 600_000, audioBitsPerSecond: 64_000 };
+    const options = { videoBitsPerSecond: 1_500_000, audioBitsPerSecond: 128_000 };
     if (mimeType) options.mimeType = mimeType;
 
     mediaRecorder = new MediaRecorder(stream, options);
